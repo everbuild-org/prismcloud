@@ -1,0 +1,9 @@
+kind: LBIngress
+name: website-ingress
+defaultNamespace: tutorial-website
+selector:
+  pod: website-example
+port:
+  containerPort: 80
+  servicePort: 8085
+  protocol: TCP

@@ -1,0 +1,7 @@
+kind: Pod
+name: website-example
+defaultNamespace: tutorial-website
+container:
+  image: nginx
+  port: 80
+  ram: 1024MB

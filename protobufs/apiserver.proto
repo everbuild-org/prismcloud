@@ -1,0 +1,119 @@
+syntax = "proto3";
+package prismcloud;
+
+option go_package = "prismcloud.dev/protobufs";
+
+message Void {}
+
+message ApiVersion { 
+    int32 major = 1;
+    int32 minor = 2;
+    int32 patch = 3;
+
+    int32 api = 4;
+    string kubernetes = 5;
+}
+
+message NamespaceCreateRequest {
+    string name = 1;
+    int64 ramLimit = 2;
+}
+
+message NamespaceDeleteRequest {
+    string name = 1;
+}
+
+message Namespace {
+    string name = 1;
+    int64 ramLimit = 2;
+}
+
+message Namespaces {
+    repeated Namespace namespaces = 1;
+}
+
+message ServiceFilter {
+    string name = 1;
+    string namespace = 2;
+}
+
+message ContainerConfiguration {
+    string image = 1;
+    int32 port = 2;
+    int64 ram = 3;
+    map<string, string> env = 4;
+}
+
+message PodCreateRequest {
+    string name = 1;
+    string namespace = 2;
+    ContainerConfiguration container = 3;
+}
+
+message PodDeleteRequest {
+    string name = 1;
+    string namespace = 2;
+}
+
+message Pod {
+    string name = 1;
+    string namespace = 2;
+    int32  containerPort = 3;
+}
+
+enum ServiceSelectorType {
+    SERVICE_SELECTOR_TYPE_NONE = 0;
+    SERVICE_SELECTOR_TYPE_POD = 1;
+}
+
+message ServiceSelector {
+    ServiceSelectorType type = 1;
+    string name = 2;
+}
+
+enum IngressProtocol {
+    TCP = 0;
+    UDP = 1;
+}
+
+message LBIngressPortConfiguration {
+    int32 containerPort = 1;
+    int32 servicePort = 2;
+    IngressProtocol protocol = 3;
+}
+
+message LBIngressCreateRequest {
+    string name = 1;
+    string namespace = 2;
+    ServiceSelector selector = 3;
+    LBIngressPortConfiguration port = 4;
+}
+
+message LBIngressDeleteRequest {
+    string name = 1;
+    string namespace = 2;
+}
+
+message LBIngress {
+    string name = 1;
+    string namespace = 2;
+    int32 containerPort = 4;
+    int32 servicePort = 3;
+    IngressProtocol protocol = 5;
+}
+
+service PrismcloudApiserver {
+    rpc Version(Void) returns (ApiVersion);
+
+    rpc GetNamespaces(Void) returns (Namespaces);
+    rpc CreateNamespace(NamespaceCreateRequest) returns (Namespace);
+    rpc DeleteNamespace(NamespaceDeleteRequest) returns (Void);
+
+    rpc CreatePod(PodCreateRequest) returns (Void);
+    rpc DeletePod(PodDeleteRequest) returns (Void);
+    rpc GetPod(ServiceFilter) returns (Pod);
+
+    rpc CreateLBIngress(LBIngressCreateRequest) returns (LBIngress);
+    rpc DeleteLBIngress(LBIngressDeleteRequest) returns (Void);
+    rpc GetLBIngress(ServiceFilter) returns (LBIngress);
+}

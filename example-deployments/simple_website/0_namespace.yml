@@ -1,0 +1,3 @@
+kind: Namespace
+name: tutorial-website
+ramLimit: 1Gi
