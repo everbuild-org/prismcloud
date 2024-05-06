@@ -12,7 +12,9 @@ import (
 
 const KubeNamespace = "prism"
 
-func (s *ServiceApi) CreatePod(namespace string, name string, container *pb.ContainerConfiguration) error {
+var OutOfCluster bool = false
+
+func (s *ServiceApi) CreatePod(namespace string, name string, container *pb.ContainerConfiguration, autoDiscovery bool) error {
 	result, err := s.Clientset.CoreV1().Pods(KubeNamespace).List(s.Context, metav1.ListOptions{
 		LabelSelector: selector.All(
 			selector.Managed(),
@@ -42,23 +44,30 @@ func (s *ServiceApi) CreatePod(namespace string, name string, container *pb.Cont
 		return err
 	}
 
+	pullPolicy := v1.PullAlways
+	if OutOfCluster {
+		pullPolicy = v1.PullNever
+	}
+
 	pod := &v1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      fmt.Sprintf("%s-%s-%d", namespace, name, time.Now().Unix()),
 			Namespace: KubeNamespace,
 			Labels: map[string]string{
-				"prismcloud.dev/managed":   "true",
-				"prismcloud.dev/name":      name,
-				"prismcloud.dev/namespace": namespace,
-				"prismcloud.dev/type":      string(selector.Pod),
-				"prismcloud.dev/port":      fmt.Sprintf("%d", container.Port),
+				"prismcloud.dev/managed":       "true",
+				"prismcloud.dev/name":          name,
+				"prismcloud.dev/namespace":     namespace,
+				"prismcloud.dev/type":          string(selector.Pod),
+				"prismcloud.dev/port":          fmt.Sprintf("%d", container.Port),
+				"prismcloud.dev/autodiscovery": fmt.Sprintf("%t", autoDiscovery),
 			},
 		},
 		Spec: v1.PodSpec{
 			Containers: []v1.Container{
 				{
-					Name:  name,
-					Image: container.Image,
+					Name:            name,
+					Image:           container.Image,
+					ImagePullPolicy: pullPolicy,
 					Ports: []v1.ContainerPort{
 						{
 							ContainerPort: container.Port,

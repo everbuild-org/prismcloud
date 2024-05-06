@@ -16,6 +16,7 @@ type PodYamlDeclaration struct {
 		Ram   string            `yaml:"ram"`
 		Env   map[string]string `yaml:"env,omitempty"`
 	} `yaml:"container"`
+	autoDiscovery bool `yaml:"autoDiscovery,default=true"`
 }
 
 func applyPod(contents string, addr string, namespace string) error {
@@ -47,6 +48,7 @@ func applyPod(contents string, addr string, namespace string) error {
 			Ram:   ram,
 			Env:   pod.Container.Env,
 		},
+		AutoDiscovery: pod.autoDiscovery,
 	})
 
 	if err != nil {

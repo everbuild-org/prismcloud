@@ -28,6 +28,8 @@ func main() {
 		logrus.SetLevel(logrus.InfoLevel)
 	}
 
+	services.OutOfCluster = *outOfCluster
+
 	logrus.Debug("Connecting to cluster...")
 
 	ctx := context.Background()

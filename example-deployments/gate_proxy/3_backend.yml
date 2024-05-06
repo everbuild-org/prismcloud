@@ -1,0 +1,8 @@
+kind: Pod
+name: backend
+defaultNamespace: tutorial-gate
+container:
+  image: prismcloud/simple-backend-service:latest
+  port: 25565
+  ram: 100MB
+autoDiscovery: true

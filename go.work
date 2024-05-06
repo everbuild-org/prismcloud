@@ -4,5 +4,6 @@ use (
     ./apiserver
     ./cli
     ./protobufs/protobufs
+	./images/ingress-gate
 )
 

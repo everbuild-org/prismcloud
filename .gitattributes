@@ -1,0 +1,2 @@
+# mark all files in images/simple-backend-service/world as binary
+images/simple-backend-service/world/** binary

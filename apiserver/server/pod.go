@@ -6,7 +6,7 @@ import (
 )
 
 func (s *Server) CreatePod(_ context.Context, in *pb.PodCreateRequest) (*pb.Void, error) {
-	return &pb.Void{}, s.Api.CreatePod(in.Namespace, in.Name, in.Container)
+	return &pb.Void{}, s.Api.CreatePod(in.Namespace, in.Name, in.Container, in.AutoDiscovery)
 }
 
 func (s *Server) DeletePod(_ context.Context, in *pb.PodDeleteRequest) (*pb.Void, error) {

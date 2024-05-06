@@ -1,0 +1,9 @@
+kind: LBIngress
+name: ingress
+defaultNamespace: tutorial-gate
+selector:
+  pod: backend
+port:
+  containerPort: 25565
+  servicePort: 25565
+  protocol: TCP

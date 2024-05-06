@@ -1,0 +1,7 @@
+kind: Pod
+name: proxy
+defaultNamespace: tutorial-gate
+container:
+  image: prismcloud/ingress-gate:latest
+  port: 25565
+  ram: 100MB

@@ -48,6 +48,7 @@ message PodCreateRequest {
     string name = 1;
     string namespace = 2;
     ContainerConfiguration container = 3;
+    bool autoDiscovery = 4;
 }
 
 message PodDeleteRequest {
