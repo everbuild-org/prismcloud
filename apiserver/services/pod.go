@@ -39,6 +39,11 @@ func (s *ServiceApi) CreatePod(namespace string, name string, container *pb.Cont
 		})
 	}
 
+	env = append(env, v1.EnvVar{
+		Name:  "__PRISM_NAMESPACE",
+		Value: namespace,
+	})
+
 	parsedRam, err := resource.ParseQuantity(fmt.Sprintf("%d", container.Ram))
 	if err != nil {
 		return err
@@ -82,6 +87,7 @@ func (s *ServiceApi) CreatePod(namespace string, name string, container *pb.Cont
 					Env: env,
 				},
 			},
+			ServiceAccountName: "prism-allow-autodiscovery",
 		},
 	}
 

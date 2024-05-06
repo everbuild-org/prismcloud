@@ -2,7 +2,7 @@ kind: LBIngress
 name: ingress
 defaultNamespace: tutorial-gate
 selector:
-  pod: backend
+  pod: proxy
 port:
   containerPort: 25565
   servicePort: 25565

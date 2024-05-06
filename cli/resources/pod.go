@@ -8,15 +8,15 @@ import (
 )
 
 type PodYamlDeclaration struct {
-	Kind      string `yaml:"kind"`
-	Name      string `yaml:"name"`
-	Container struct {
+	Kind          string `yaml:"kind"`
+	Name          string `yaml:"name"`
+	AutoDiscovery *bool  `yaml:"autoDiscovery,omitempty"`
+	Container     struct {
 		Image string            `yaml:"image"`
 		Port  int32             `yaml:"port"`
 		Ram   string            `yaml:"ram"`
 		Env   map[string]string `yaml:"env,omitempty"`
 	} `yaml:"container"`
-	autoDiscovery bool `yaml:"autoDiscovery,default=true"`
 }
 
 func applyPod(contents string, addr string, namespace string) error {
@@ -39,6 +39,10 @@ func applyPod(contents string, addr string, namespace string) error {
 		return err
 	}
 
+	if pod.AutoDiscovery == nil {
+		pod.AutoDiscovery = new(bool)
+	}
+
 	_, err = c.Api.CreatePod(c.Ctx, &protobufs.PodCreateRequest{
 		Name:      pod.Name,
 		Namespace: namespace,
@@ -48,7 +52,7 @@ func applyPod(contents string, addr string, namespace string) error {
 			Ram:   ram,
 			Env:   pod.Container.Env,
 		},
-		AutoDiscovery: pod.autoDiscovery,
+		AutoDiscovery: *pod.AutoDiscovery,
 	})
 
 	if err != nil {

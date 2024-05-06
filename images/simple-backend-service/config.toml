@@ -25,14 +25,14 @@ view-distance = 10
 listen-address = "0.0.0.0:25565"
 motd = "A Minecraft Server"
 network-compression-threshold = 256
-online-mode = true
+online-mode = false
 level-name = "world"
 enforce-secure-profile = true
 
 [chunk-loading-limiter]
 every = "1s"
-n = 10
+n = 10000
 
 [player-chunk-loading-limiter]
 every = "1s"
-n = 10
+n = 10000
