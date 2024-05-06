@@ -24,6 +24,8 @@ var applyCmd = &cobra.Command{
 
 		filename := args[0]
 
+		contents := make([]string, 0)
+
 		all, err := os.ReadDir(filename)
 		if err == nil {
 			for _, f := range all {
@@ -35,33 +37,28 @@ var applyCmd = &cobra.Command{
 				cobra.CheckErr(err)
 
 				text := string(content)
-
-				if applyForce {
-					_ = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Delete, currentNamespace)
-					println("[f] waiting for deletion to complete")
-					time.Sleep(time.Second * 3)
-				}
-
-				err = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Apply, currentNamespace)
-				cobra.CheckErr(err)
+				contents = append(contents, text)
 			}
+		} else {
+			content, err := os.ReadFile(filename)
+			cobra.CheckErr(err)
 
-			return
+			text := string(content)
+			contents = append(contents, text)
 		}
 
-		content, err := os.ReadFile(filename)
-		cobra.CheckErr(err)
-
-		text := string(content)
-
 		if applyForce {
-			_ = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Delete, currentNamespace)
+			for _, text := range contents {
+				_ = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Delete, currentNamespace)
+			}
 			println("[f] waiting for deletion to complete")
 			time.Sleep(time.Second * 3)
 		}
 
-		err = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Apply, currentNamespace)
-		cobra.CheckErr(err)
+		for _, text := range contents {
+			err = resources.ParseAndActOnResourceFile(text, apiAddr, resources.Apply, currentNamespace)
+			cobra.CheckErr(err)
+		}
 	},
 }
 
