@@ -1,0 +1,66 @@
+bind:
+  ip: '0.0.0.0'
+  port: 25565
+
+maxPlayers: -1
+
+ping:
+  description: '{"text": "&9NanoLimbo"}'
+  version: 'NanoLimbo'
+  protocol: -1
+
+dimension: THE_END
+
+playerList:
+  enable: false
+  username: 'NanoLimbo'
+
+headerAndFooter:
+  enable: false
+  header: '{"text": "&eWelcome!"}'
+  footer: '{"text": "&9NanoLimbo"}'
+
+gameMode: 3
+
+brandName:
+  enable: true
+  content: 'fallback'
+
+joinMessage:
+  enable: false
+  text: '{"text": "&eWelcome to the Limbo!"}'
+
+bossBar:
+  enable: true
+  text: '{"text": "Welcome to the Limbo!"}'
+  health: 1.0
+  color: PINK
+  division: SOLID
+
+title:
+  enable: false
+  title: '{"text": "&9&lWelcome!"}'
+  subtitle: '{"text": "&6NanoLimbo"}'
+  fadeIn: 10
+  stay: 100
+  fadeOut: 10
+
+infoForwarding:
+  type: NONE
+  secret: '<YOUR_SECRET_HERE>'
+  tokens:
+    - '<BUNGEE_GUARD_TOKEN>'
+readTimeout: 30000
+debugLevel: 2
+
+netty:
+  useEpoll: true
+  threads:
+    bossGroup: 1
+    workerGroup: 4
+
+traffic:
+  enable: true
+  maxPacketSize: 8192
+  interval: 7.0
+  maxPacketRate: 500.0

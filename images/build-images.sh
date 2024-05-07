@@ -12,11 +12,11 @@ fi
 
 IMAGES=(
   "ingress-gate"
+  "nanolimbo"
 )
 
 if $OPTIONAL; then
   IMAGES+=(
-    "simple-backend-service"
   )
 fi
 

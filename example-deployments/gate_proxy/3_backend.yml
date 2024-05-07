@@ -2,7 +2,7 @@ kind: Pod
 name: backend
 defaultNamespace: tutorial-gate
 container:
-  image: prismcloud/simple-backend-service:latest
+  image: prismcloud/nanolimbo:latest
   port: 25565
-  ram: 100MB
+  ram: 500MB
 autoDiscovery: true
